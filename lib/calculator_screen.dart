@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CalculatorScreen extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class CalculatorScreen extends StatefulWidget {
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String displayText = '0';
+  bool isEvaluated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,35 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       'C', '0', '=', '+',
     ];
 
+    void onButtonPressed(String buttonText) {
+      setState(() {
+        if (buttonText == 'C') {
+          displayText = '0';
+          isEvaluated = false;
+        } else if (buttonText == '=') {
+          try {
+            Parser parser = Parser();
+            Expression exp = parser.parse(displayText);
+            ContextModel cm = ContextModel();
+            double eval = exp.evaluate(EvaluationType.REAL, cm);
+            displayText = eval.toString();
+            isEvaluated = true;
+          } catch (e) {
+            displayText = 'Error';
+          }
+        } else {
+          if (isEvaluated) {
+            displayText = buttonText;
+            isEvaluated = false;
+          } else if (displayText == '0' && buttonText != '.') {
+            displayText = buttonText;
+          } else {
+            displayText += buttonText;
+          }
+        }
+      });
+    }
+
     return Expanded(
       flex: 2,
       child: GridView.builder(
@@ -65,5 +96,4 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       ),
     );
   }
-
 }
