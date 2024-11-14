@@ -1,16 +1,19 @@
-# advancedcalculator
+# 📱 Octocalc - Advanced Cross-Platform Calculator
 
-A new Flutter project.
+Welcome to **Octocalc**! This advanced calculator app is designed for Android and iOS, aiming to provide a sleek, user-friendly experience inspired by iOS UX.
 
-## Getting Started
+<!-- Add a banner image if you have one -->
 
-This project is a starting point for a Flutter application.
+## 🎨 Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Instant Calculations**: Auto-calculate as you type for quicker results.
+- **Cross-Platform Compatibility**: Smooth performance on both Android and iOS.
+- **User-Friendly Interface**: A clean, minimal UI with an iOS-inspired design.
+- **Advanced Calculations**: Supports complex functions, logarithms, trigonometry, and more.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Getting Started
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/yourusername/autocalc.git
+   cd autocalc
