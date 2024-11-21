@@ -214,11 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-
-
-
-
-
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -227,7 +222,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login or Create Account'),
+        title: const Text('Welcome to Octocalc'),
         backgroundColor: const Color(0xFF252526),
       ),
       backgroundColor: const Color(0xFF1E1E1E), // Dark theme background
@@ -235,7 +230,20 @@ class LoginScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Title
+            Text(
+              'Welcome to Octocalc',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontFamily: 'monospace',
+              ),
+            ),
+            const SizedBox(height: 30),
             // Email Field
             TextField(
               controller: emailController,
@@ -263,13 +271,14 @@ class LoginScreen extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 24),
-            // Login Button
+            // Sign In Button
             ElevatedButton(
               onPressed: () async {
                 final box = Hive.box('credentialsBox');
                 final storedEmail = box.get('email');
                 final storedPassword = box.get('password');
 
+                // Check if credentials match
                 if (emailController.text == storedEmail &&
                     passwordController.text == storedPassword) {
                   // Save login state and username
@@ -291,11 +300,11 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFF007ACC), // Blue login button
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: const Text(
-                'Login',
+                'Sign In',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
@@ -303,11 +312,10 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             // Create Account Button
             ElevatedButton(
               onPressed: () {
-                // Call the create account method from HomeScreen
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
@@ -362,7 +370,7 @@ class LoginScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFF333333), // Grey button
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: const Text(
@@ -374,12 +382,25 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 40),
+            // Footer text
+            const Text(
+              'Your go-to advanced calculator app.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
+                fontFamily: 'monospace',
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+
 
 
 class CreateAccountScreen extends StatelessWidget {
