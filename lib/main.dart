@@ -14,7 +14,7 @@ class AdvancedCalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box('credentialsBox');
-    final isLoggedIn = box.get('isLoggedIn', defaultValue: false); // Correctly get boolean
+    final bool isLoggedIn = box.get('isLoggedIn', defaultValue: false); // Correctly get boolean
 
     return MaterialApp(
       title: 'Advanced Calculator',
@@ -98,7 +98,7 @@ class AdvancedCalculatorApp extends StatelessWidget {
       ),
 
       // Navigate to HomeScreen if not logged in, MainScreen if logged in
-      home: isLoggedIn ? MainScreen() : HomeScreen(),
+      home: isLoggedIn ? HomeScreen() : LoginScreen(),
     );
 
   }

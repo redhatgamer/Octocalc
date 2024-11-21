@@ -218,6 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
+
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -225,29 +226,44 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text('Login or Create Account'),
+        backgroundColor: const Color(0xFF252526),
+      ),
+      backgroundColor: const Color(0xFF1E1E1E), // Dark theme background
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Email Field
             TextField(
               controller: emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Color(0xFF252526), // Dark field background
+                labelStyle: TextStyle(color: Colors.white70),
               ),
+              style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 16),
+            // Password Field
             TextField(
               controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Color(0xFF252526),
+                labelStyle: TextStyle(color: Colors.white70),
               ),
+              style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 24),
+            // Login Button
             ElevatedButton(
               onPressed: () async {
                 final box = Hive.box('credentialsBox');
@@ -258,7 +274,7 @@ class LoginScreen extends StatelessWidget {
                     passwordController.text == storedPassword) {
                   // Save login state and username
                   box.put('isLoggedIn', true);
-                  box.put('username', storedEmail); // Store the email as the username or replace with actual username
+                  box.put('username', storedEmail); // Store the email as the username
 
                   // Navigate to the HomeScreen
                   Navigator.pushReplacement(
@@ -271,15 +287,100 @@ class LoginScreen extends StatelessWidget {
                   );
                 }
               },
-              child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF007ACC), // Blue login button
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontFamily: 'monospace',
+                ),
+              ),
             ),
+            const SizedBox(height: 15),
+            // Create Account Button
+            ElevatedButton(
+              onPressed: () {
+                // Call the create account method from HomeScreen
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text('Create Account'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final box = Hive.box('credentialsBox');
+                          box.put('email', emailController.text);
+                          box.put('password', passwordController.text);
 
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Account Created Successfully')),
+                          );
+
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: const Text('Create'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF333333), // Grey button
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: const Text(
+                'Create Account',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
 
 class CreateAccountScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
