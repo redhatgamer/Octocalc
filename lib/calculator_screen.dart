@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:hive/hive.dart'; // Import Hive
+import 'home_screen.dart'; // Import HomeScreen
 
 class CalculatorScreen extends StatefulWidget {
   @override
@@ -13,20 +15,42 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Advanced Calculator')),
+      appBar: AppBar(
+        title: const Text('Advanced Calculator'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              final box = Hive.box('credentialsBox');
+              box.put('isLoggedIn', false); // Reset the login state
+
+              // Navigate back to the HomeScreen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
             child: Container(
               alignment: Alignment.bottomRight,
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 displayText,
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           buildButtons(),
         ],
       ),
@@ -35,10 +59,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   Widget buildButtons() {
     List<String> buttons = [
+      'C', '(', ')', '⌫',
       '7', '8', '9', '/',
       '4', '5', '6', '*',
       '1', '2', '3', '-',
-      'C', '0', '=', '+',
+      '.', '0', '=', '+',
     ];
 
     void onButtonPressed(String buttonText) {
@@ -46,6 +71,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         if (buttonText == 'C') {
           displayText = '0';
           isEvaluated = false;
+        } else if (buttonText == '⌫') {
+          if (displayText.length > 1) {
+            displayText = displayText.substring(0, displayText.length - 1);
+          } else {
+            displayText = '0';
+          }
         } else if (buttonText == '=') {
           try {
             Parser parser = Parser();
@@ -74,20 +105,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       flex: 2,
       child: GridView.builder(
         itemCount: buttons.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+        gridDelegate:
+        const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => onButtonPressed(buttons[index]),
             child: Container(
-              margin: EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.grey[800],
+                color: getButtonColor(buttons[index]),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
                 child: Text(
                   buttons[index],
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -95,5 +131,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         },
       ),
     );
+  }
+
+  Color getButtonColor(String button) {
+    if (button == 'C' || button == '⌫') {
+      return Colors.redAccent;
+    } else if (['/', '*', '-', '+', '='].contains(button)) {
+      return Colors.orange;
+    } else {
+      return Colors.grey[800]!;
+    }
   }
 }

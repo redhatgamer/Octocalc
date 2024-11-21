@@ -1,63 +1,328 @@
+import 'package:advancedcalculator/calculator_screen.dart';
+import 'package:advancedcalculator/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'calculator_screen.dart';
-import 'settings_screen.dart';
+import 'package:hive/hive.dart';
 
-class HomeScreen extends StatelessWidget {
+
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0; // Default selected tab
+  final box = Hive.box('credentialsBox');
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isLoggedIn = box.get('isLoggedIn', defaultValue: false);
+    final String userName = box.get('username', defaultValue: 'User'); // Default username
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF1E1E1E),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // "Menu bar" at the top
+            Container(
+              color: const Color(0xFF252526),
+              height: 40,
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.menu, color: Colors.white, size: 20),
+                    onPressed: () {},
+                  ),
+                  const Text(
+                    "Octocalc - Home",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Main body
+            Expanded(
+              child: Center(
+                child: isLoggedIn
+                    ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Welcome, $userName!',
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Logout logic
+                        box.put('isLoggedIn', false); // Reset login state
+                        box.delete('username'); // Optionally delete username
+
+                        // Refresh the screen by replacing the current route
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF333333),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                    : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Navigate to the Login Screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF333333),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: const [
+                          Icon(Icons.login, color: Colors.white),
+                          SizedBox(width: 10),
+                          Text(
+                            'Sign In',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Navigate to the Create Account Screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CreateAccountScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF333333),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: const [
+                          Icon(Icons.person_add, color: Colors.white),
+                          SizedBox(width: 10),
+                          Text(
+                            'Create Account',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFF252526),
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+
+          // Handle navigation logic based on the selected tab
+          if (index == 0) {
+            // Home tab (do nothing, already here)
+          } else if (index == 1) {
+            // Navigate to Calculator Screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CalculatorScreen()),
+            );
+          } else if (index == 2) {
+            // Navigate to Settings Screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsScreen()), // Replace with your SettingsScreen class
+            );
+          }
+        },
+        selectedItemColor: const Color(0xFF007ACC),
+        unselectedItemColor: Colors.white70,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calculate),
+            label: 'Calculator',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+class LoginScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome to Advanced Calculator'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+      appBar: AppBar(title: const Text('Login')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Welcome message
-            Text(
-              'Hello! Ready to calculate?',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-
-            // Feature Highlights
-            Text(
-              'Features:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            FeatureTile(icon: Icons.calculate, title: 'Advanced Calculations', description: 'Perform complex calculations with ease.'),
-            FeatureTile(icon: Icons.history, title: 'Calculation History', description: 'Keep track of recent calculations.'),
-            FeatureTile(icon: Icons.settings, title: 'Customizable Settings', description: 'Adjust settings to personalize your experience.'),
-
-            // Divider
-            Divider(height: 32, thickness: 2),
-
-            // Recent Calculations
-            Text(
-              'Recent Calculations:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            // Dummy recent calculations list
-            RecentCalculationTile(expression: '5 + 3 * 2', result: '11'),
-            RecentCalculationTile(expression: '12 / 4 + 6', result: '9'),
-            RecentCalculationTile(expression: '√49 + 8', result: '15'),
-
-            // Settings button
-            SizedBox(height: 32),
-            Center(
-              child: ElevatedButton.icon(
-                icon: Icon(Icons.settings),
-                label: Text('Go to Settings'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()),
-                  );
-                },
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
               ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () async {
+                final box = Hive.box('credentialsBox');
+                final storedEmail = box.get('email');
+                final storedPassword = box.get('password');
+
+                if (emailController.text == storedEmail &&
+                    passwordController.text == storedPassword) {
+                  // Save login state and username
+                  box.put('isLoggedIn', true);
+                  box.put('username', storedEmail); // Store the email as the username or replace with actual username
+
+                  // Navigate to the HomeScreen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid Credentials')),
+                  );
+                }
+              },
+              child: const Text('Login'),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CreateAccountScreen extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Create Account')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () async {
+                final box = Hive.box('credentialsBox');
+                box.put('email', emailController.text);
+                box.put('password', passwordController.text);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Account Created Successfully')),
+                );
+                Navigator.pop(context); // Go back to Login
+              },
+              child: const Text('Create Account'),
             ),
           ],
         ),
@@ -66,35 +331,4 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class FeatureTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
 
-  FeatureTile({required this.icon, required this.title, required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, size: 30, color: Colors.blueAccent),
-      title: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      subtitle: Text(description),
-    );
-  }
-}
-
-class RecentCalculationTile extends StatelessWidget {
-  final String expression;
-  final String result;
-
-  RecentCalculationTile({required this.expression, required this.result});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.history, color: Colors.green),
-      title: Text(expression),
-      subtitle: Text('Result: $result'),
-    );
-  }
-}

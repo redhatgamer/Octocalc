@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "896639228597",
+    "project_id": "octocalc",
+    "storage_bucket": "octocalc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896639228597:android:71d2d23f95699913267cfc",
+        "android_client_info": {
+          "package_name": "com.example.advancedcalculator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjxgVV_PHCU7JPFivlsNRREgYtyMIPRuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
