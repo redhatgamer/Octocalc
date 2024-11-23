@@ -54,7 +54,10 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                    MaterialPageRoute(builder: (context) => SettingsScreen(
+                      onThemeChanged: (ThemeData theme) {
+                      },
+                    )),
                   );
                 },
               ),

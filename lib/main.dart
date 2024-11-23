@@ -7,18 +7,39 @@ void main() {
   runApp(AdvancedCalculatorApp());
 }
 
-class AdvancedCalculatorApp extends StatelessWidget {
+// Changed from StatelessWidget to StatefulWidget to support theme changes
+class AdvancedCalculatorApp extends StatefulWidget {
+  @override
+  _AdvancedCalculatorAppState createState() => _AdvancedCalculatorAppState();
+}
+
+class _AdvancedCalculatorAppState extends State<AdvancedCalculatorApp> {
+  ThemeData _theme = ThemeData(
+    primaryColor: Colors.blue,
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+  );
+
+  void _updateTheme(ThemeData newTheme) {
+    setState(() {
+      _theme = newTheme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Advanced Calculator',
-      theme: ThemeData.dark(),
-      home: MainScreen(),
+      theme: _theme,
+      home: MainScreen(onThemeChanged: _updateTheme),
     );
   }
 }
 
 class MainScreen extends StatefulWidget {
+  final Function(ThemeData) onThemeChanged;
+
+  const MainScreen({Key? key, required this.onThemeChanged}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -26,11 +47,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CalculatorScreen(),
-    SettingsScreen(),
-  ];
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      HomeScreen(),
+      CalculatorScreen(),
+      SettingsScreen(onThemeChanged: widget.onThemeChanged),
+    ];
+  }
 
   void _onTabTapped(int index) {
     setState(() {
