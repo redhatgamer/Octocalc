@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'calculator_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
+import 'search_screen.dart';
 
 void main() async {
   await Hive.initFlutter(); // Initialize Hive
@@ -14,44 +15,37 @@ class AdvancedCalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box('credentialsBox');
-    final bool isLoggedIn = box.get('isLoggedIn', defaultValue: false); // Correctly get boolean
+    final bool isLoggedIn = box.get('isLoggedIn', defaultValue: false);
 
     return MaterialApp(
       title: 'Advanced Calculator',
       theme: ThemeData(
-        // Background colors for dark theme
-        scaffoldBackgroundColor: const Color(0xFF1E1E1E), // Dark grey background
-        primaryColor: const Color(0xFF007ACC), // VS Code blue
+        scaffoldBackgroundColor: const Color(0xFF1E1E1E),
+        primaryColor: const Color(0xFF007ACC),
         colorScheme: ColorScheme.dark(
-          primary: const Color(0xFF007ACC), // Blue accents
-          secondary: const Color(0xFF444444), // Grey accents
+          primary: const Color(0xFF007ACC),
+          secondary: const Color(0xFF444444),
         ),
-        cardColor: const Color(0xFF252526), // Darker grey for cards or sections
-        dividerColor: const Color(0xFF444444), // Grey divider
-
-        // Button themes
+        cardColor: const Color(0xFF252526),
+        dividerColor: const Color(0xFF444444),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF333333), // Button background
-            foregroundColor: Colors.white, // Button text/icon color
-            textStyle: const TextStyle(
-              fontFamily: 'monospace', // Monospace font for IDE look
-            ),
+            backgroundColor: const Color(0xFF333333),
+            foregroundColor: Colors.white,
+            textStyle: const TextStyle(fontFamily: 'monospace'),
           ),
         ),
-
-        // Text themes
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontFamily: 'monospace',
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.white, // Title color
+            color: Colors.white,
           ),
           bodyLarge: TextStyle(
             fontFamily: 'monospace',
             fontSize: 16,
-            color: Colors.white70, // Subtle text color
+            color: Colors.white70,
           ),
           bodyMedium: TextStyle(
             fontFamily: 'monospace',
@@ -59,10 +53,8 @@ class AdvancedCalculatorApp extends StatelessWidget {
             color: Colors.white70,
           ),
         ),
-
-        // AppBar theme
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF252526), // IDE-like app bar
+          backgroundColor: Color(0xFF252526),
           titleTextStyle: TextStyle(
             fontFamily: 'monospace',
             fontSize: 20,
@@ -71,36 +63,29 @@ class AdvancedCalculatorApp extends StatelessWidget {
           ),
           iconTheme: IconThemeData(color: Colors.white),
         ),
-
-        // Input decoration (TextField)
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
-          fillColor: Color(0xFF252526), // Dark input background
+          fillColor: Color(0xFF252526),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF444444)), // Border color
+            borderSide: BorderSide(color: Color(0xFF444444)),
             borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF007ACC)), // Blue border when focused
+            borderSide: BorderSide(color: Color(0xFF007ACC)),
           ),
           labelStyle: TextStyle(
-            color: Colors.white70, // Text color for labels
+            color: Colors.white70,
             fontFamily: 'monospace',
           ),
         ),
-
-        // Bottom navigation bar theme
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color(0xFF252526), // Dark bar background
-          selectedItemColor: Color(0xFF007ACC), // Blue for selected item
-          unselectedItemColor: Colors.white70, // Subtle white for unselected items
+          backgroundColor: Color(0xFF252526),
+          selectedItemColor: Color(0xFF007ACC),
+          unselectedItemColor: Colors.white70,
         ),
       ),
-
-      // Navigate to HomeScreen if not logged in, MainScreen if logged in
-      home: isLoggedIn ? HomeScreen() : LoginScreen(),
+      home: isLoggedIn ? MainScreen() : HomeScreen(),
     );
-
   }
 }
 
@@ -114,6 +99,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     HomeScreen(),
+    SearchScreen(),
     CalculatorScreen(),
     SettingsScreen(),
   ];

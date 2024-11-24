@@ -1,5 +1,3 @@
-import 'package:advancedcalculator/calculator_screen.dart';
-import 'package:advancedcalculator/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -164,48 +162,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF252526),
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          // Handle navigation logic based on the selected tab
-          if (index == 0) {
-            // Home tab (do nothing, already here)
-          } else if (index == 1) {
-            // Navigate to Calculator Screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CalculatorScreen()),
-            );
-          } else if (index == 2) {
-            // Navigate to Settings Screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsScreen()), // Replace with your SettingsScreen class
-            );
-          }
-        },
-        selectedItemColor: const Color(0xFF007ACC),
-        unselectedItemColor: Colors.white70,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: 'Calculator',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
       ),
     );
   }
