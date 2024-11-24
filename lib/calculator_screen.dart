@@ -37,11 +37,10 @@ class _CalculatorScreenState extends State<CalculatorScreen>
         title: const Text('Converter Calculator'),
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.black,
-          unselectedLabelColor: Colors.white,
-          indicator: BoxDecoration(
-            color: const Color(0xFF00C853),
-            borderRadius: BorderRadius.circular(25),
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey,
+          indicator: const UnderlineTabIndicator(
+            borderSide: BorderSide(width: 2.0, color: Colors.green),
           ),
           tabs: const [
             Tab(text: 'Converter'),
