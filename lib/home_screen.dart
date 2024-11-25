@@ -1,3 +1,4 @@
+import 'package:advancedcalculator/main.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -63,13 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         // Logout logic
+                        final box = Hive.box('credentialsBox');
                         box.put('isLoggedIn', false); // Reset login state
                         box.delete('username'); // Optionally delete username
 
-                        // Refresh the screen by replacing the current route
-                        Navigator.pushReplacement(
-                          context,
+                        // Clear the navigation stack and navigate to HomeScreen
+                        Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => HomeScreen()),
+                              (route) => false, // Removes all routes from the stack
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -241,10 +243,10 @@ class LoginScreen extends StatelessWidget {
                   box.put('isLoggedIn', true);
                   box.put('username', storedEmail); // Store the email as the username
 
-                  // Navigate to the HomeScreen
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  // Navigate to the MainScreen and clear navigation stack
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => MainScreen()),
+                        (route) => false, // Clear all previous routes
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
