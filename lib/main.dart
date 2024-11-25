@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'calculator_screen.dart';
 import 'home_screen.dart';
@@ -8,6 +9,7 @@ import 'search_screen.dart';
 void main() async {
   await Hive.initFlutter(); // Initialize Hive
   await Hive.openBox('credentialsBox'); // Open a box for storing credentials
+  await dotenv.load(fileName: ".env"); // Default is ".env"
   runApp(AdvancedCalculatorApp());
 }
 
