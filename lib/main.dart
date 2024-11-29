@@ -6,10 +6,10 @@ import 'home_screen.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
 
-void main() async {
+Future<void> main() async {
+  // await dotenv.load();
   await Hive.initFlutter(); // Initialize Hive
   await Hive.openBox('credentialsBox'); // Open a box for storing credentials
-  await dotenv.load(fileName: ".env"); // Default is ".env"
   runApp(AdvancedCalculatorApp());
 }
 
