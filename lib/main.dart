@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'calculator_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
@@ -10,8 +10,17 @@ Future<void> main() async {
   // await dotenv.load();
   await Hive.initFlutter(); // Initialize Hive
   await Hive.openBox('credentialsBox'); // Open a box for storing credentials
-  runApp(AdvancedCalculatorApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (_) => ThemeNotifier(),
+        child: AdvancedCalculatorApp(),
+      ),
+  );
 }
+
+
+
+
 
 class AdvancedCalculatorApp extends StatelessWidget {
   @override
