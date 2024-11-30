@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'dart:math' show pow, log, ln10;
 
 class CalculatorScreen extends StatefulWidget {
   @override
@@ -9,6 +10,26 @@ class CalculatorScreen extends StatefulWidget {
 class _CalculatorScreenState extends State<CalculatorScreen> {
   String displayText = '0';
   bool isEvaluated = false;
+  int decimalPlaces = 2;
+  String numberFormat = 'Standard';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String _formatResult(double result) {
+    if (numberFormat == 'Scientific') {
+      return result.toStringAsExponential(decimalPlaces);
+    } else if (numberFormat == 'Engineering') {
+      int exp = result.abs() == 0 ? 0 : (log(result.abs()) / ln10).floor();
+      int engExp = (exp / 3).floor() * 3;
+      double coefficient = result / pow(10, engExp);
+      return '${coefficient.toStringAsFixed(decimalPlaces)}e$engExp';
+    } else {
+      return result.toStringAsFixed(decimalPlaces);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +73,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             Expression exp = parser.parse(displayText);
             ContextModel cm = ContextModel();
             double eval = exp.evaluate(EvaluationType.REAL, cm);
-            displayText = eval.toString();
+            displayText = _formatResult(eval);
             isEvaluated = true;
           } catch (e) {
             displayText = 'Error';
