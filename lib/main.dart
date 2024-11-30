@@ -1,3 +1,4 @@
+import 'package:advancedcalculator/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -5,17 +6,23 @@ import 'calculator_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
+import 'camera_screen.dart';
 
 Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
   // await dotenv.load();
   await Hive.initFlutter(); // Initialize Hive
   await Hive.openBox('credentialsBox'); // Open a box for storing credentials
+
   runApp(
-      ChangeNotifierProvider(
-        create: (_) => ThemeNotifier(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ],
         child: AdvancedCalculatorApp(),
-      ),
-  );
+      ));
 }
 
 
@@ -118,6 +125,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
     SearchScreen(),
+    CameraScreen(),
     CalculatorScreen(),
     SettingsScreen(),
   ];
@@ -160,6 +168,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera),
+            label: 'Scan',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),

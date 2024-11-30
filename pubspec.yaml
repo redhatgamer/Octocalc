@@ -35,6 +35,10 @@ dependencies:
   flutter_dotenv: ^5.0.2
   path_provider: ^2.0.14
   provider: 6.1.2
+  image_picker: ^0.8.7+4
+  mobile_scanner: ^2.0.0
+  camera: ^0.11.0
+  permission_handler: ^10.0.0
 
 
 

@@ -52,14 +52,145 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Welcome, $userName!',
+                      'Welcome to OctoCalc!',
                       style: const TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Color(0xFF61AFEF), // Light blue for header text
                         fontFamily: 'monospace',
                       ),
+                      textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'The advanced calculator for precise and effortless calculations.',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF98C379), // Soft green for subheading text
+                        fontFamily: 'sans-serif',
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+
+// Gamification: Achievement Display
+                    Text(
+                      '🎉 Achievements Unlocked:',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFFD19A66), // Light orange for emphasis
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Chip(
+                          label: const Text(
+                            'First Calculation 🎯',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Color(0xFF282C34), // Dark background for chip
+                        ),
+                        Chip(
+                          label: const Text(
+                            'Daily Challenge Completed 🏆',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Color(0xFF282C34),
+                        ),
+                        Chip(
+                          label: const Text(
+                            'Solved a Complex Equation 🧠',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Color(0xFF282C34),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+// Gamification: Daily Challenge
+                    Text(
+                      '🎯 Daily Challenge: Simplify 3x^2 + 5x - 2 = 0',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFE06C75), // Light red for challenge text
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Navigate to the challenge mode
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF61AFEF), // Light blue for button
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text(
+                        'Solve Now',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+// Gamification: Points System
+                    Text(
+                      '🌟 Your Points: 1200',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF98C379), // Soft green for points text
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Earn more points by solving challenges and using OctoCalc!',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFABB2BF), // Gray for secondary text
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+
+                    const SizedBox(height: 20),
+
+// Call to Action: Leaderboard
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // Navigate to the leaderboard screen
+                      },
+                      icon: const Icon(
+                        Icons.leaderboard,
+                        color: Color(0xFF61AFEF), // Light blue icon for VS Code theme
+                      ),
+                      label: const Text(
+                        'View Leaderboard',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white, // White text for readability
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF282C34), // Dark gray background for button
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        side: BorderSide(
+                          color: Color(0xFF61AFEF), // Light blue border for emphasis
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
