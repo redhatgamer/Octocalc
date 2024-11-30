@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.advancedcalculator"
+    namespace = "com.techcorp.advancedcalculator"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
